@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "autolumnet"
+version = "0.2.0"
+description = "AutoLumNet: bi-branch exposure-aware single-shot image enhancement"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [{name = "AutoLumNet contributors"}]
+dependencies = [
+    "torch>=2.1",
+    "torchvision>=0.16",
+    "numpy>=1.24",
+    "pillow>=10.0",
+    "tqdm>=4.65",
+    "pyyaml>=6.0",
+    "tensorboard>=2.14",
+]
+
+[project.optional-dependencies]
+wandb = ["wandb>=0.16"]
+tune  = ["optuna>=3.4"]
+download = ["kaggle>=1.6"]
+dev   = ["pytest>=7", "ruff>=0.1", "wandb>=0.16", "optuna>=3.4", "kaggle>=1.6"]
+
+[project.scripts]
+autolumnet-train    = "autolumnet.train:main"
+autolumnet-tune     = "autolumnet.tune:main"
+autolumnet-eval     = "autolumnet.evaluate:main"
+
+[tool.setuptools.packages.find]
+include = ["autolumnet*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = ["E501", "B008"]

@@ -1,0 +1,51 @@
+# Smoke-test config: minimal run that exercises the full pipeline.
+# Useful for catching issues before launching a big training run.
+
+data:
+  root: ./data            # Kaggle SICE will be auto-downloaded here
+  crop: 128
+  train_frac: 0.9
+  seed: 42
+
+model:
+  pretrained: true
+  n_bins: 64
+  rho: 0.20
+
+loss:
+  rec:    1.0
+  align:  0.5
+  perc:   0.1
+  smooth: 0.1
+  ssim:   0.2
+  p_star_mean:  0.50
+  p_star_sigma: 0.18
+  perc_pretrained: false   # set true for real runs (downloads VGG16)
+
+train:
+  out_dir:    null       # auto-filled to outputs/<run_name>
+  resume:     null       # or "auto" to pick up last.pt in out_dir
+  epochs:     2
+  batch_size: 16         # global batch across all GPUs
+  accum_steps: 1
+  lr:         1.0e-4
+  weight_decay: 1.0e-2
+  betas: [0.9, 0.999]
+  warmup_steps: 100
+  grad_clip: 5.0
+  num_workers: 2
+  amp: bf16              # bf16 / fp16 / none
+  channels_last: true
+  compile: false
+  ema: true
+  ema_decay: 0.999
+  eval_every: 1
+  save_every: 1
+  monitor: test/ssim
+  seed: 42
+
+logging:
+  use_wandb: false       # off for smoke; turn on for real runs
+  use_tb: true
+  wandb_project: autolumnet
+  wandb_entity: null

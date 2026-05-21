@@ -1,0 +1,54 @@
+# SOTA config for serious multi-GPU runs.
+# Suggested hardware:
+#   1x A100/H100/A6000   batch_size 128, accum_steps 1
+#   4x A6000             batch_size 512, accum_steps 1
+#   8x A100              batch_size 1024, accum_steps 1
+# If you OOM, halve batch_size and double accum_steps to keep the effective batch fixed.
+
+data:
+  root: ./data
+  crop: 256
+  train_frac: 0.9
+  seed: 42
+
+model:
+  pretrained: true
+  n_bins: 64
+  rho: 0.20
+
+loss:
+  rec:    1.0
+  align:  0.5
+  perc:   0.1
+  smooth: 0.1
+  ssim:   0.2
+  p_star_mean:  0.50
+  p_star_sigma: 0.18
+
+train:
+  out_dir:    null
+  resume:     null
+  epochs:     300
+  batch_size: 512        # GLOBAL effective batch
+  accum_steps: 1
+  lr:         3.0e-4     # scaled up for large batch
+  weight_decay: 1.0e-2
+  betas: [0.9, 0.999]
+  warmup_steps: 1000
+  grad_clip: 5.0
+  num_workers: 4
+  amp: bf16
+  channels_last: true
+  compile: false         # torch.compile sometimes hurts for small models; enable if it helps
+  ema: true
+  ema_decay: 0.9995      # higher decay for longer runs
+  eval_every: 5
+  save_every: 25
+  monitor: test/ssim
+  seed: 42
+
+logging:
+  use_wandb: true
+  use_tb: true
+  wandb_project: autolumnet
+  wandb_entity: null     # set to your wandb username/team

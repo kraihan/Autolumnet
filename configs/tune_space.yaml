@@ -1,0 +1,41 @@
+# Hyperparameter search space for `autolumnet-tune`.
+# Each key is a dotted path into the config; types: uniform / loguniform / int / categorical.
+
+train.lr:
+  type: loguniform
+  low: 5.0e-5
+  high: 1.0e-3
+
+train.weight_decay:
+  type: loguniform
+  low: 1.0e-4
+  high: 1.0e-1
+
+model.rho:
+  type: uniform
+  low: 0.05
+  high: 0.40
+
+model.n_bins:
+  type: categorical
+  choices: [32, 64, 128]
+
+loss.align:
+  type: loguniform
+  low: 0.05
+  high: 2.0
+
+loss.perc:
+  type: loguniform
+  low: 0.01
+  high: 1.0
+
+loss.smooth:
+  type: loguniform
+  low: 0.01
+  high: 1.0
+
+loss.p_star_sigma:
+  type: uniform
+  low: 0.10
+  high: 0.30

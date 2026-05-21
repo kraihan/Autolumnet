@@ -1,0 +1,10 @@
+torch>=2.1
+torchvision>=0.16
+numpy>=1.24
+pillow>=10.0
+tqdm>=4.65
+pyyaml>=6.0
+tensorboard>=2.14
+wandb>=0.16
+optuna>=3.4
+kaggle>=1.6
